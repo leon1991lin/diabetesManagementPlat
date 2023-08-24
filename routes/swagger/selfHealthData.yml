@@ -1,0 +1,58 @@
+檢視所有自主監控數據
+---
+tags:
+  - "Self Heath Data"
+
+responses:
+  200:
+    description: "Success"
+    schema:
+      title: "message"
+      type: "object"
+      properties:
+        message:
+          type: "array"
+          description: "回傳資料"
+          items:
+            properties:
+              self_health_id:
+                type: "number"
+                description: "自主記錄編號(id)"
+                example: 100
+              patient_id:
+                type: "number"
+                description: "病人代碼"
+                example: 1
+              recorder_id:
+                type: "number"
+                description: "紀錄者代碼"
+                example: 1
+              record_date:
+                type: "string"
+                format: "date"
+                description: "紀錄日期"
+                example: "2023-08-28"
+              record_type:
+                type: "number"
+                description: "紀錄類別代碼 [1:HbA1C, 2:LDL-C, 3:身高, 4:體重, 5:飯前血糖, 6:飯後血糖, 7:舒張壓, 8:收縮壓]"
+                example: 5
+              record:
+                type: "number"
+                format: "double"
+                description: "紀錄者代碼"
+                example: 1
+              create_time:
+                type: "string"
+                format: "date-time"
+                description: "新增時間"
+                example: "2023-08-28 00:00:00"
+              update_time:
+                type: "string"
+                format: "date-time"
+                description: "新增時間"
+                example: "2023-08-28 00:00:00"
+              delete_time:
+                type: "string"
+                format: "date-time"
+                description: "新增時間"
+                example: ""

@@ -1,0 +1,99 @@
+from apiproject import mysql_engine
+from datetime import datetime
+
+"""
+建立共用物件 dm_table
+指定表格與給定表格id
+可操作資料表CRUD
+"""
+class dm_table:
+
+    def __init__(self, table_name:str, table_id:str):
+        self.mysql = mysql_engine()
+        self.table_name=table_name
+        self.table_id=table_id
+        self.count = self.mysql.get_data_to_df(f"SELECT COUNT(*) count FROM {self.table_name};")["count"][0]
+
+    # Read
+    def get_all(self):
+        return self.mysql.get_data_to_df(f"SELECT * FROM {self.table_name};")
+
+    def get_by_one_assign_colume(self,column_name, column_value):
+        return self.mysql.get_data_to_df(f"SELECT * FROM {self.table_name} WHERE {column_name}='{column_value}';")
+
+    # Insert
+    def insert_one(self, record:dict):
+
+        insert_columns, insert_values = "", "("
+        for key, value in record.items():
+            insert_columns  += f"{key} , "
+            insert_values   += f"'{value}', "
+
+        insert_columns = insert_columns + "create_time"
+        insert_values = insert_values + f"'{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}')"
+
+        sql = f"""INSERT INTO {self.table_name} ({insert_columns})
+                  VALUES {insert_values};
+               """
+
+        try:
+            self.mysql.execute_sql(sql)
+
+        except Exception as e:
+            print("INSERT ERROR: ",e)
+
+        return
+
+    # Update (by id)
+    def update_one(self,record:dict):
+
+        update_stn=""
+        for key, value in record.items():
+            if key !=f"{self.table_id}":
+                update_stn+= f"{key}='{value}', "
+
+        update_stn += f"update_time='{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}'"
+
+        sql = f"""UPDATE {self.table_name}
+                  SET  {update_stn}
+                  WHERE {self.table_id}={record[self.table_id]};
+                """
+        try:
+            self.mysql.execute_sql(sql)
+
+        except Exception as e:
+            print("UPDATE ERROR: ",e)
+
+        return
+
+    # Delete (by id)
+    def delete_one(self,id:int):
+        sql = f"DELECT FROM {self.table_name} WHERE {self.table_id}={id};"
+
+        try:
+            self.mysql.execute_sql(sql)
+
+        except Exception as e:
+            print("DELECT ERROR: ",e)
+
+        return
+
+    # Truncate
+    def truncate(self):
+        sql=f"TRUNCATE TABLE {self.table_name};"
+
+        try:
+            self.mysql.execute_sql(sql)
+
+        except Exception as e:
+            print("TRUNCATE ERROR: ", e)
+
+        return
+
+if __name__ == '__main__':
+
+    record_type_table = dm_table("record_type", "type_id")
+    print("record_type count: ", record_type_table.count)
+
+    self_health_data_table = dm_table("self_health_data", "self_health_id")
+    print("self_health_data count: ", self_health_data_table.count)

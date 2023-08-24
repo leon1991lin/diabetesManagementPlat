@@ -1,0 +1,55 @@
+import pandas as pd
+from apiproject import mysql_engine
+
+mysql = mysql_engine()
+
+'''
+self_health_data
+'''
+# Read
+# Closest data
+def get_closest_data_by_id(user_id:int, record_type:int):
+
+    df = mysql.get_data_to_df(f'''SELECT s.record_date, r.record_name, s.record, r.record_unit, s.create_time
+                                FROM self_health_data s
+                                LEFT JOIN record_type r
+                                ON  s.record_type=r.type_id
+                                WHERE s.patient_id={user_id}
+                                AND s.record_type={record_type}
+                                AND s.record_date=(SELECT Max(record_date) FROM self_health_data WHERE record_type={record_type} AND patient_id={user_id});
+                                ''')
+
+    return df
+
+# average data
+def get_average_data_by_id(user_id:int, record_type:int):
+
+    df = mysql.get_data_to_df(f'''SELECT s.record_date, r.record_name, AVG(s.record) avg_record, r.record_unit
+                                FROM self_health_data s
+                                LEFT JOIN record_type r
+                                ON  s.record_type=r.type_id
+                                WHERE s.patient_id={user_id}
+                                AND s.record_type={record_type}
+                                GROUP BY r.record_name;
+                                ''')
+
+    return df
+
+# all data (limit)
+def get_data_by_id(user_id:int, record_type:int, limit=30):
+
+    df = mysql.get_data_to_df(f'''SELECT s.record_date, r.record_name, s.record, r.record_unit
+                                FROM self_health_data s
+                                LEFT JOIN record_type r
+                                ON  s.record_type=r.type_id
+                                WHERE s.patient_id={user_id}
+                                AND s.record_type={record_type}
+                                LIMIT {limit}
+                                ''')
+
+    return df
+
+if __name__ == '__main__':
+
+    print(get_closest_data_by_id(1,1))
+

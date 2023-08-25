@@ -16,17 +16,29 @@ template = {
             "responsibleDeveloper":"Leon Lin",
             "email":"i88828702@gmail.com"
         },
+    "servers":{
+        "url":"127.0.0.1:8016"
+    },
     "version":"1.0.0"
     },
-    "host":"",
-    "basePath":"127.0.0.1:15380",
+    "host":"127.0.0.1:8016",
+    "basePath":"",
     "tags":[
         {
             "name":"Test",
             "description":"連線測試"
-        },        {
-            "name":"Self Heath Data",
+        },
+        {
+            "name":"Self Health Data",
             "description":"自主監測數據"
+        },
+        {
+            "name": "Users",
+            "description": "使用者資訊"
+        },
+        {
+            "name": "Basic Information",
+            "description": "系統基礎設定"
         },
     ],
     "schemes":[

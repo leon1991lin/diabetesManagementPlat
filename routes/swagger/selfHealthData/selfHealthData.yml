@@ -1,8 +1,6 @@
-檢視所有自主監控數據
----
+summary: "檢視全部自主監控數據"
 tags:
-  - "Self Heath Data"
-
+  - "Self Health Data"
 responses:
   200:
     description: "Success"

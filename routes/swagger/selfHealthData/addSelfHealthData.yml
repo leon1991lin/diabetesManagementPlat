@@ -1,0 +1,50 @@
+summary: "新增自主監控數據(支援單筆、多筆輸入)\r"
+tags:
+  - "Self Health Data"
+produces:
+  - application/json
+parameters:
+  - in: body
+    name: body
+    required: true
+    type: object
+    schema:
+      $ref: "#definitions/SeltHealthDataInput"
+
+responses:
+  '200':
+    description: Success
+    schema:
+      type: object
+      properties:
+        message:
+          type: "string"
+          description: "訊息"
+          example: "Success"
+
+definitions:
+  SeltHealthDataInput:
+    type: object
+    properties:
+      patient_id:
+        type: "number"
+        description: "病人代碼"
+        example: 1
+      recorder_id:
+        type: "number"
+        description: "紀錄者代碼"
+        example: 1
+      record_date:
+        type: "string"
+        format: "date"
+        description: "紀錄日期"
+        example: "2023-08-28"
+      record_type:
+        type: "number"
+        description: "紀錄類別代碼 [1:HbA1C, 2:LDL-C, 3:身高, 4:體重, 5:飯前血糖, 6:飯後血糖, 7:舒張壓, 8:收縮壓]"
+        example: 5
+      record:
+        type: "number"
+        format: "double"
+        description: "紀錄者代碼"
+        example: 1

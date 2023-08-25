@@ -1,0 +1,61 @@
+summary: "新增使用者\r"
+tags:
+  - "Users"
+produces:
+  - application/json
+parameters:
+  - in: body
+    name: body
+    required: true
+    type: object
+    schema:
+      $ref: "#definitions/UserInput"
+
+responses:
+  '200':
+    description: Success
+    schema:
+      type: object
+      properties:
+        message:
+          type: "string"
+          description: "訊息"
+          example: "Success"
+
+definitions:
+  UserInput:
+    type: object
+    properties:
+      user_name:
+        type: "string"
+        description: "使用者名稱"
+        example: "Leon"
+      user_account:
+        type: "string"
+        description: "使用者帳號 (E-mail)"
+        example: "123@abc.com"
+      user_password:
+        type: "string"
+        description: "使用者密碼 (Hashed)"
+        example: "e84432d8bfcadf7b0e44"
+      born_date:
+        type: "string"
+        format: "date"
+        description: "出生年月日"
+        example: "2002-08-28"
+      telephone:
+        type: "string"
+        description: "電話"
+        example: "0906012321"
+      address:
+        type: "string"
+        description: "地址"
+        example: "台東縣太麻里鄉泰豐路18號"
+      user_type:
+        type: "number"
+        description: "使用者類別 [1:病人, 2:照護者]"
+        example: 1
+#      institution_id:
+#        type: "number"
+#        description: "收案醫療院所代表(ID)"
+#        example: 1

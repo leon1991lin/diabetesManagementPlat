@@ -1,0 +1,10 @@
+summary: "伺服器連線測試\r"
+tags:
+  - Test
+responses:
+  "200":
+    description: Success
+    schema:
+      type: string
+      description: 測試訊息
+      example: "Wellcome to  DM API."

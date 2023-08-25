@@ -1,0 +1,23 @@
+summary: "刪除指定ID的自主監測數據"
+
+tags:
+  - "Self Health Data"
+
+parameters:
+  - name: "self_health_id"
+    description: "自主監測資料代碼(ID)"
+    required: true
+    type: "number"
+    in: "path"
+    default: 90
+
+responses:
+  '200':
+    description: Success
+    schema:
+      type: object
+      properties:
+        message:
+          type: "string"
+          description: "訊息"
+          example: "Success"

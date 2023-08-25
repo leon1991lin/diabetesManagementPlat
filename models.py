@@ -40,6 +40,7 @@ class User(Base):
     telephone       = Column(String(32))
     address         = Column(String(128))
     user_type       = Column(Integer)
+    institution_id  = Column(Integer, default=0)
     create_time     = Column(DateTime, default=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     update_time     = Column(DateTime, default=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     delete_time     = Column(DateTime)

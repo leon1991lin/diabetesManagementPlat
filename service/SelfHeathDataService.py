@@ -10,9 +10,9 @@ def add_record(data):
     if type(data) == str:
         try:
             data = json.loads(data)
-            meg = SelfHeathDataRepository.insert_one(data)
+            msg = SelfHeathDataRepository.insert_one(data)
         except Exception as e:
-            meg = f"Input Type Error: {e} , input data:{data}."
+            msg = f"Input Type Error: {e} , input data:{data}."
 
 
     elif type(data) == dict:
@@ -21,17 +21,17 @@ def add_record(data):
             and ("record_date"  in data.keys())\
             and ("record"       in  data.keys()):
 
-            meg = SelfHeathDataRepository.insert_one(data)
+            msg = SelfHeathDataRepository.insert_one(data)
 
         else:
 
-            meg =  f"Input Data Key Error: need 'patient_id','record_type', 'record_date' and 'record'."
+            msg =  f"Input Data Key Error: need 'patient_id','record_type', 'record_date' and 'record'."
 
     else:
 
-        meg = f"Input Type Error: type need to be 'dict' , input data type: {type(data)}."
+        msg = f"Input Type Error: type need to be 'dict' , input data type: {type(data)}."
 
-    return {"message":meg}
+    return {"message":msg}
 
 
 def add_records(data_list:list):
@@ -43,8 +43,8 @@ def add_records(data_list:list):
                 data = json.loads(data)
 
             except Exception as e:
-                meg = f"Input Type Error: {e} , input data:{data}."
-                return {"message":meg}
+                msg = f"Input Type Error: {e} , input data:{data}."
+                return {"message":msg}
 
         elif type(data) == dict:
             if ("patient_id" in data.keys()) \
@@ -54,25 +54,25 @@ def add_records(data_list:list):
                 pass
 
             else:
-                meg = f"Input Element Key Error: need 'patient_id','record_type', 'record_date' and 'record'."
-                return {"message": meg}
+                msg = f"Input Element Key Error: need 'patient_id','record_type', 'record_date' and 'record'."
+                return {"message": msg}
 
         else:
 
-            meg = f"Input Element Type Error: element type need to be 'dict' , input data type: {type(data)}."
-            return {"message": meg}
+            msg = f"Input Element Type Error: element type need to be 'dict' , input data type: {type(data)}."
+            return {"message": msg}
 
-        meg = SelfHeathDataRepository.insert_all(data_list)
-        return {"message": meg}
+        msg = SelfHeathDataRepository.insert_all(data_list)
+        return {"message": msg}
 
 def update_record(data):
 
     if type(data) == str:
         try:
             data = json.loads(data)
-            meg = SelfHeathDataRepository.update_one_record(data)
+            msg = SelfHeathDataRepository.update_one_record(data)
         except Exception as e:
-            meg = f"Update Type Error: {e} , input data:{data}."
+            msg = f"Update Type Error: {e} , input data:{data}."
 
 
     elif type(data) == dict:
@@ -81,17 +81,17 @@ def update_record(data):
                 and ("record_date" in data.keys()) \
                 and ("record" in data.keys()):
 
-            meg = SelfHeathDataRepository.update_one_record(data)
+            msg = SelfHeathDataRepository.update_one_record(data)
 
         else:
 
-            meg = f"Update Data Key Error: need 'patient_id','record_type', 'record_date' and 'record'."
+            msg = f"Update Data Key Error: need 'patient_id','record_type', 'record_date' and 'record'."
 
     else:
 
-        meg = f"Update Type Error: type need to be 'dict' , input data type: {type(data)}."
+        msg = f"Update Type Error: type need to be 'dict' , input data type: {type(data)}."
 
-    return {"message": meg}
+    return {"message": msg}
 
 def delete_by_id(self_health_id):
 

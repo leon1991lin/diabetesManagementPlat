@@ -13,21 +13,19 @@ Table: Users
 mysql = mysql_engine()
 Session = sessionmaker(bind=mysql_engine().engine)
 
-
 def insert_one(user: dict):
     session = Session()
-
     try:
         session.add(User(**user))
         session.commit()
 
     except Exception as e:
         print(e)
+        return f"Insert Error: {e}"
 
     finally:
         session.close()
-    return
-
+    return "Success"
 
 def update_one(user: dict):
     session = Session()
@@ -62,11 +60,12 @@ def update_one(user: dict):
 
     except Exception as e:
         print(e)
+        return f"Update Error: {e}"
 
     finally:
         session.close()
 
-    return
+    return "Success"
 
 def get_all():
     session = Session()
@@ -77,26 +76,25 @@ def get_all():
         tmp = vars(row)
         tmp.pop("_sa_instance_state")
         records_list.append(tmp)
+
     return records_list
 
 def get_user_by_id(user_id:int):
     session = Session()
-    result = {}
     try:
         records = session.query(User).filter(User.user_id==user_id).one()
 
         result = vars(records)
         result.pop("_sa_instance_state")
 
-
     except Exception as e:
         print("Error: ", e)
+        return f"Select Error: {e}"
 
     finally:
         session.close()
 
     return result
-
 
 def get_user_by_name(user_name:str):
     session = Session()
@@ -112,13 +110,12 @@ def get_user_by_name(user_name:str):
 
     except Exception as e:
         print("Error: ", e)
+        return f"Select Error: {e}"
 
     finally:
         session.close()
 
     return records_list
-
-
 
 def delete_one_by_id(user_id):
     session = Session()
@@ -129,12 +126,11 @@ def delete_one_by_id(user_id):
 
     except Exception as e:
         print("Error: ", e)
-        return e
+        return f"Delete Error: {e}"
     finally:
         session.close()
 
-    return del_record.user_id
-
+    return "Success"
 
 
 if __name__ == '__main__':

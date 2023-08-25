@@ -1,0 +1,69 @@
+summary: "檢視全部使用者資訊\r"
+
+tags:
+  - "Users"
+
+responses:
+  200:
+    description: "Success"
+    schema:
+      title: "data"
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          description: "回傳資料"
+          items:
+            properties:
+              user_id:
+                type: "number"
+                description: "使用者編號 (id)"
+                example: 1
+              user_name:
+                type: "string"
+                description: "使用者名稱"
+                example: "Leon"
+              user_account:
+                type: "string"
+                description: "使用者帳號 (E-mail)"
+                example: "123@abc.com"
+              user_password:
+                type: "string"
+                description: "使用者密碼 (Hashed)"
+                example: "e84432d8bfcadf7b0e44"
+              born_date:
+                type: "string"
+                format: "date"
+                description: "出生年月日"
+                example: "2002-08-28"
+              telephone:
+                type: "string"
+                description: "電話"
+                example: "0906012321"
+              address:
+                type: "string"
+                description: "地址"
+                example: "台東縣太麻里鄉泰豐路18號"
+              user_type:
+                type: "number"
+                description: "使用者類別 [1:病人, 2:照護者]"
+                example: 1
+              institution_id:
+                type: "number"
+                description: "收案醫療院所代表(ID)"
+                example: 1
+              create_time:
+                type: "string"
+                format: "date-time"
+                description: "新增時間"
+                example: "2023-08-28 00:00:00"
+              update_time:
+                type: "string"
+                format: "date-time"
+                description: "新增時間"
+                example: "2023-08-28 00:00:00"
+              delete_time:
+                type: "string"
+                format: "date-time"
+                description: "新增時間"
+                example: ""

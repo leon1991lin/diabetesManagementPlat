@@ -1,0 +1,41 @@
+summary: "檢視檢測數據類別資料"
+tags:
+  - "Basic Information"
+responses:
+  200:
+    description: "Success"
+    schema:
+      title: "data"
+      type: "object"
+      properties:
+        type_id:
+          type: "number"
+          description: "紀錄類別編號(id)"
+          example: 1
+        record_name:
+          type: "string"
+          description: "記錄類型名稱"
+          example: "HbA1c"
+        record_unit:
+          type: "string"
+          description: "紀錄單位"
+          example: "%"
+        record_group:
+          type: "number"
+          description: "紀錄類型 [1:檢驗數據,, 2:自主監測數據]"
+          example: 1
+        create_time:
+          type: "string"
+          format: "date-time"
+          description: "新增時間"
+          example: "2023-08-28 00:00:00"
+        update_time:
+          type: "string"
+          format: "date-time"
+          description: "新增時間"
+          example: "2023-08-28 00:00:00"
+        delete_time:
+          type: "string"
+          format: "date-time"
+          description: "新增時間"
+          example: ""

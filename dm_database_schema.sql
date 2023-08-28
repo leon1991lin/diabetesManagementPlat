@@ -69,8 +69,8 @@ test_date				date				comment "檢驗時間",
 create_time				datetime			comment	"建立時間",
 update_time				datetime			comment	"修改時間",
 delete_time				datetime			comment	"刪除時間",
-primary key (medical_record_data_id),
-foreign key (record_type) 	references record_type(type_id)
+primary key (medical_record_data_id)
+-- foreign key (record_type) 	references record_type(type_id)
 );
 
 -- 醫療機構
@@ -115,25 +115,27 @@ primary key (relate_id)
 );
 
 -- 處方籤紀錄
-create table prescription(
-prescription_id		int auto_increment	comment	"處方籤編號",
+create table prescription_relate(
+relate_id			int auto_increment	comment	"關聯代碼",
+prescription_id		int 				comment	"處方籤編號",
 medicine_id			int					comment	"藥品代碼",
 create_time			datetime			comment	"建立時間",
 update_time			datetime			comment	"修改時間",
 delete_time			datetime			comment	"刪除時間",
-primary key (prescription_id)
+primary key (relate_id)
 -- foreign key (medicine_id) references medicine(medicine_id)
+-- foreign key (prescription_id) references medical_records(prescription_id)
 );
 
 -- 藥品與使用指示資料
 create table medicine(
 medicine_id			int auto_increment	comment	"藥品代碼",
-medicine_name		varchar(16)			comment "藥品名稱",
+medicine_name		varchar(64)			comment "藥品名稱",
 medicine_dosage		varchar(64)			comment "藥品劑量服用方式",
 create_time			datetime			comment	"建立時間",
 update_time			datetime			comment	"修改時間",
 delete_time			datetime			comment	"刪除時間",
-primary key (prescription_id)
+primary key (medicine_id)
 );
 
 -- 紀錄類型參數

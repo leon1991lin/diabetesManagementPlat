@@ -5,7 +5,7 @@ from flasgger import Swagger
 
 import pandas as pd
 from sqlalchemy import create_engine
-from config import settings, template
+from apiproject.config import settings, template
 
 username="root"
 password="0000"

@@ -1,8 +1,9 @@
 import json
+import pandas as pd
 from pprint import pprint
 
 # from apiproject.TableRepository import dm_table
-from apiproject.repository import SelfHeathDataRepository
+from apiproject.repository import SelfHeathDataRepository, RecordTypeRspository
 
 
 def add_record(data):
@@ -107,6 +108,34 @@ def read_all():
 
     return {"message": SelfHeathDataRepository.get_all()}
 
+def read_newest_by_patient_id(patient_id):
+
+
+    df = pd.DataFrame(SelfHeathDataRepository.get_data_by_patient_id_join(patient_id))
+
+    present_items = ["GlucoseAC", "GlucosePC", "DBP", "SBP", "Height", "Weight"]
+
+    newest_data = {}
+    for item in present_items:
+        newest_data[item] = df.loc[df["record_name"]==item, "record"].iloc[0]
+
+    newest_data["BMI"] = round(newest_data["Weight"]/((newest_data["Height"]/100)**2), 2)
+
+    return {
+        "patient_id":patient_id,
+        "patient_name":df["user_name"][0],
+        "datas" : newest_data
+    }
+
+def read_monthly_data(patient_id, record_names,start_date):
+    df = pd.DataFrame()
+    for record_name in record_names:
+        tmp_df = pd.DataFrame(SelfHeathDataRepository.get_monthly_data(patient_id=patient_id, start_date=start_date, record_type=RecordTypeRspository.get_id_by_name(record_name)))
+        df = pd.concat([df, tmp_df])
+
+    df = df.sort_values(by=["record_time", "record_type"], ascending=True)
+
+    return df.to_dict("records")
 
 
 if __name__ == '__main__':
@@ -147,4 +176,8 @@ if __name__ == '__main__':
 
    # pprint(update_record(data))
 
-   pprint(delete_by_id(82))
+   # pprint(delete_by_id(82))
+
+   # pprint(read_newest_by_patient_id(1))
+
+   pprint(read_monthly_data(1, ["飯前血糖","飯後血糖"], "202308"))

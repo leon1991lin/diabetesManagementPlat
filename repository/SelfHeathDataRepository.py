@@ -1,4 +1,5 @@
-import datetime
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 import json
 from pprint import pprint
 
@@ -80,7 +81,7 @@ def update_one_record(self_health_update_data):
                 .first()
 
         record.record=self_health_update_data["record"]
-        record.update_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        record.update_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         session.commit()
 
     except Exception as e:
@@ -146,7 +147,6 @@ def delete_one_by_id(self_health_id):
 """
 Join RecordType table & User table
 """
-
 def get_data_by_patient_id_join(patient_id:int):
     session = Session()
     records_list = []
@@ -176,8 +176,28 @@ def get_data_by_patient_id_join(patient_id:int):
 
     return records_list
 
+def get_monthly_data(patient_id:int, record_type:int, start_date:str):
+    session = Session()
+    records_list=[]
+    start_time = datetime.strptime(start_date,"%Y%m")
+    end_time = start_time + relativedelta(months=1)
 
+    monthly_data = session.query(SelfHealthData, RecordType)\
+                    .filter(SelfHealthData.record_type == RecordType.type_id) \
+                    .filter(SelfHealthData.patient_id == patient_id)\
+                    .filter(SelfHealthData.record_type == record_type) \
+                    .filter((SelfHealthData.record_time >= start_time) & (SelfHealthData.record_time < end_time)).all()
 
+    for selfHealthData, recordType in monthly_data:
+        tmp_r = vars(recordType)
+        tmp = vars(selfHealthData)
+
+        tmp.pop("_sa_instance_state")
+        tmp["record_name"] = tmp_r["record_name"]
+        tmp["record_name_cn"] = tmp_r["record_name_cn"]
+        records_list.append(tmp)
+
+    return records_list
 
 
 if __name__ == '__main__':
@@ -186,7 +206,7 @@ if __name__ == '__main__':
         "patient_id"    : 99,
         "recorder_id"   : 99,
         "record_type"   : 5,
-        "record_date"   : "2023/08/23",
+        "record_time"   : "2023/08/23 12:00:00",
         "record"        : 82
     }
 
@@ -195,21 +215,21 @@ if __name__ == '__main__':
         "patient_id"    : 99,
         "recorder_id"   : 99,
         "record_type"   : 6,
-        "record_date"   : "2023/08/23",
+        "record_time"   : "2023/08/23 12:00:00",
         "record"        : 120
         },
         {
             "patient_id": 99,
             "recorder_id": 99,
             "record_type": 7,
-            "record_date": "2023/08/23",
+            "record_time": "2023/08/23 12:00:00",
             "record": 80
         },
         {
             "patient_id": 99,
             "recorder_id": 99,
             "record_type": 8,
-            "record_date": "2023/08/23",
+            "record_time": "2023/08/23 12:00:00",
             "record": 110
         }
     ]
@@ -227,6 +247,9 @@ if __name__ == '__main__':
 
     # delete_one_by_id(80)
 
-    df = pd.DataFrame(get_data_by_patient_id_join(1))
-    print(df.columns)
-    print(df.info())
+    # df = pd.DataFrame(get_data_by_patient_id_join(1))
+    # print(df.columns)
+    # print(df.info())
+    # pprint(df.to_dict("records"))
+
+    pprint(get_monthly_data(1, 1, "202308"))

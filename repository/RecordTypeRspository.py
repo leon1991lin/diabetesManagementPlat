@@ -19,6 +19,12 @@ def get_all():
         records_list.append(tmp)
     return records_list
 
+def get_id_by_name(name):
+    session = Session()
+    return (session.query(RecordType).filter(RecordType.record_name_cn == name).first()).type_id
+
 if __name__ == '__main__':
     
-    pprint(get_all())
+    # pprint(get_all())
+
+    pprint(get_id_by_name("身高"))

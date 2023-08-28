@@ -13,14 +13,16 @@ class RecordType(Base):
     # columns
     type_id         = Column(Integer, primary_key=True, autoincrement=True)
     record_name     = Column(String)
+    record_name_cn  = Column(String)
     record_unit     = Column(String)
     record_group    = Column(Integer)
     create_time     = Column(DateTime, default=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     update_time     = Column(DateTime, default=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     delete_time     = Column(DateTime)
 
-    def __init__(self, record_name, record_unit, record_group):
+    def __init__(self, record_name, record_name_cn, record_unit, record_group):
         self.record_name=record_name
+        self.record_name_cn=record_name_cn
         self.record_unit=record_unit
         self.record_group=record_group
 
@@ -62,7 +64,7 @@ class SelfHealthData(Base):
     patient_id      = Column(Integer, ForeignKey("user.user_id"))
     recorder_id     = Column(Integer, ForeignKey("user.user_id"))
     record_type     = Column(Integer, ForeignKey("record_type.type_id"))
-    record_date     = Column(Date)
+    record_time     = Column(DateTime)
     record          = Column(Float)
     create_time     = Column(DateTime, default=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     update_time     = Column(DateTime, default=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
@@ -72,7 +74,7 @@ class SelfHealthData(Base):
         self.patient_id     = patient_id
         self.recorder_id    = recorder_id
         self.record_type    = record_type
-        self.record_date    = record_date
+        self.record_time    = record_date
         self.record         = record
 
 

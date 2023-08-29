@@ -1,8 +1,8 @@
+from datetime import datetime, timedelta, date
 import json
 import pandas as pd
 from pprint import pprint
 
-# from apiproject.TableRepository import dm_table
 from apiproject.repository import SelfHeathDataRepository, RecordTypeRspository
 
 
@@ -110,14 +110,15 @@ def read_all():
 
 def read_newest_by_patient_id(patient_id):
 
-
     df = pd.DataFrame(SelfHeathDataRepository.get_data_by_patient_id_join(patient_id))
+    sector = df.groupby("record_name")
 
     present_items = ["GlucoseAC", "GlucosePC", "DBP", "SBP", "Height", "Weight"]
 
     newest_data = {}
     for item in present_items:
-        newest_data[item] = df.loc[df["record_name"]==item, "record"].iloc[0]
+        newest_data[item] = sector.get_group(item)["record"].iloc[0]
+        # newest_data[item] = df.loc[df["record_name"]==item, "record"].iloc[0]
 
     newest_data["BMI"] = round(newest_data["Weight"]/((newest_data["Height"]/100)**2), 2)
 
@@ -136,6 +137,47 @@ def read_monthly_data(patient_id, record_names,start_date):
     df = df.sort_values(by=["record_time", "record_type"], ascending=True)
 
     return df.to_dict("records")
+
+def read_weekly_by_patient_id(patient_id, searchDay=datetime.now().date()):
+    resultList = []
+
+    curr_day = searchDay
+    present_items = {"avgGlucoseAC":5, "avgGlucosePC":6, "avgDBP":7, "avgSBP":8}
+
+    df = pd.DataFrame(SelfHeathDataRepository.get_patient_data_by_patient_id(patient_id))
+    if df.empty:
+        return resultList
+
+    df["record_date"] = df["record_time"].apply(lambda t: t.date())
+    df = df.loc[df.record_type.isin(present_items.values())]
+
+    while curr_day >= (searchDay - timedelta(days=7)):
+
+        tmp = {
+            "record_date":curr_day,
+            "avgGlucoseAC":-99,
+            "avgGlucosePC": -99,
+            "avgDBP":-99,
+            "avgSBP":-99
+        }
+
+        curr_df = df.loc[df.record_date == curr_day]
+        if curr_df.empty:
+            pass
+        else:
+            secdf = curr_df.groupby("record_type")
+            for name, type in present_items.items():
+
+                tmp[name] = secdf.get_group(type)["record"].mean()
+
+        curr_day -= timedelta(days=1)
+        resultList.append(tmp)
+
+    def keyfn(ele):
+        return ele["record_date"]
+
+    resultList.sort(key=keyfn, reverse=True)
+    return resultList
 
 
 if __name__ == '__main__':
@@ -180,4 +222,6 @@ if __name__ == '__main__':
 
    # pprint(read_newest_by_patient_id(1))
 
-   pprint(read_monthly_data(1, ["飯前血糖","飯後血糖"], "202308"))
+   # pprint(read_monthly_data(1, ["飯前血糖","飯後血糖"], "202308"))
+
+   pprint(read_weekly_by_patient_id(1, date.fromisoformat("2023-08-20")))

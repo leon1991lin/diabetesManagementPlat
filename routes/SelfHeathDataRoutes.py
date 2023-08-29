@@ -1,4 +1,6 @@
 import json
+from datetime import date
+
 from flask import Blueprint, request
 
 from apiproject.service import SelfHeathDataService
@@ -55,3 +57,7 @@ def monthly_data():
         return "Input Data Error: error data type", 400
     else:
         return SelfHeathDataService.read_monthly_data(patient_id=input_data["patient_id"],record_names=input_data["record_names"], start_date=input_data["search_month"]), 200
+
+@selfHeathData.route('/selfHeathData/weeklydata/<patient_id>', methods=["GET"])
+def weekly_data(patient_id):
+    return SelfHeathDataService.read_weekly_by_patient_id(patient_id, searchDay=date.fromisoformat("2023-08-20")), 200

@@ -1,11 +1,11 @@
 use dmplat;
 
 -- APP使用者
-INSERT INTO user (user_name, user_account, user_password, born_date, telephone, address, user_type, institution_id, create_time)
+INSERT INTO user (user_name, user_account, user_password, born_date, gender, telephone, address, user_type, institution_id, create_time)
 VALUES
-("王大明", "123@abc.com.tw", "pbkdf2:sha256:600000$aSLbrxWbk4OfB4yS$7c6c7f4ba853a0fc02583d4521e49d8211655599b469e84432d8bfcadf7b0e44", "2023-08-01", "0900123456", "台東市中山路1號", 1, 2,"2023-08-18 13:58:31"),
-('陳小美', '456@abc.com.tw', 'pbkdf2:sha256:600000$hAko7XVEsjrpjNOo$f5231b11b3d2ebef3f1d70c3265ac3db70b0368b452bc874c6b231c540ae7e84', '2023-08-03', '0900123456', '台東市更生一路22號', 1, 3,'2023-08-18 14:01:42'),
-('張志勝', '789@abc.com.tw', 'pbkdf2:sha256:600000$RaTv0pBfyje8yDrW$080a529d18e8ba1913c488d4bd6a6afea1136cf5e3866dab95918f881711ef61', '2023-08-05', '0900456789', '台東市南京路25號之一', 1, 3,'2023-08-18 14:12:10')
+("王大明", "123@abc.com.tw", "pbkdf2:sha256:600000$aSLbrxWbk4OfB4yS$7c6c7f4ba853a0fc02583d4521e49d8211655599b469e84432d8bfcadf7b0e44", "2023-08-01", "M", "0900123456", "台東市中山路1號", 1, 2,"2023-08-18 13:58:31"),
+('陳小美', '456@abc.com.tw', 'pbkdf2:sha256:600000$hAko7XVEsjrpjNOo$f5231b11b3d2ebef3f1d70c3265ac3db70b0368b452bc874c6b231c540ae7e84', '2023-08-03', "F", '0900123456', '台東市更生一路22號', 1, 3,'2023-08-18 14:01:42'),
+('張志勝', '789@abc.com.tw', 'pbkdf2:sha256:600000$RaTv0pBfyje8yDrW$080a529d18e8ba1913c488d4bd6a6afea1136cf5e3866dab95918f881711ef61', '2023-08-05', "M",'0900456789', '台東市南京路25號之一', 1, 3,'2023-08-18 14:12:10')
 ;
 
 -- 醫療機構
@@ -81,11 +81,11 @@ VALUES
 ;
 
 -- 回診/就診紀錄
-INSERT INTO medical_records(record_date, patient_id, institution_id, doctor_id, dietitian_id, educator_id, phase_type, prescription_id, memo, follow_up_date, create_time)
+INSERT INTO medical_records(record_date, patient_id, institution_id, doctor_id, dietitian_id, educator_id, phase_type, prescription_id, diagnosis, memo, follow_up_date, create_time)
 VALUES
-("2023-08-18", 1, 2, 2, 2, 4, 1, 1, "", "2023-11-20", now()),
-("2023-08-20", 2, 3, 5, 2, 2, 1, 1, "", "2023-11-25", now()),
-("2023-08-22", 3, 3, 5, 2, 2, 1, 1, "", "2023-11-28", now())
+("2023-08-18", 1, 2, 2, 2, 4, 1, 1, "Type 2 diabetes", "", "2023-11-20", now()),
+("2023-08-20", 2, 3, 5, 2, 2, 1, 1, "Type 2 diabetes","", "2023-11-25", now()),
+("2023-08-22", 3, 3, 5, 2, 2, 1, 1, "Type 1 diabetes","", "2023-11-28", now())
 ;
 
 -- 回診檢驗數據

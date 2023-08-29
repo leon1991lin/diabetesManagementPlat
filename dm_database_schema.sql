@@ -9,6 +9,7 @@ user_name		varchar(16)	not null 	comment "使用者名稱",
 user_account	varchar(64) not null 	comment "使用者帳號(電子信箱)",
 user_password	varchar(256) not null 	comment "使用者密碼(hash)",
 born_date		date					comment	"出生年月日",
+gender			varchar(2)				comment	"性別",
 telephone		varchar(16)				comment	"連絡電話",
 address			varchar(64)				comment	"住址",
 user_type		int						comment "使用者類型(1:病人, 2:照護者)",
@@ -43,7 +44,8 @@ doctor_id			int 				comment	"看診醫師編號",
 dietitian_id		int 				comment	"營養師編號",
 educator_id			int 				comment	"衛教師編號",
 phase_type			int					comment	"追蹤階段編號",
-prescription_id		int					comment "處方簽編號",		
+prescription_id		int					comment "處方簽編號",
+diagnosis			varchar(128)		comment "診斷",
 memo				text				comment "備忘紀錄",
 follow_up_date		date				comment "下次回診日期",
 create_time			datetime			comment	"建立時間",
@@ -88,7 +90,7 @@ primary key (institution_id)
 );
 
 -- 醫事人員
-create table  medical_staff(
+create table medical_staff(
 staff_id			int auto_increment		comment	"醫事人員代號",
 staff_name			varchar(16)	not null 	comment "醫事人員名稱",
 staff_account		varchar(64) not null 	comment "醫事人員帳號",
@@ -167,5 +169,5 @@ primary key (phase_id)
 
 
 -- 選取 Table name
-SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
-WHERE TABLE_NAME="self_health_data";
+-- SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+-- WHERE TABLE_NAME="self_health_data";

@@ -189,12 +189,15 @@ def get_monthly_data(patient_id:int, record_type:int, start_date:str):
                     .filter((SelfHealthData.record_time >= start_time) & (SelfHealthData.record_time < end_time)).all()
 
     for selfHealthData, recordType in monthly_data:
-        tmp_r = vars(recordType)
-        tmp = vars(selfHealthData)
+        tmp ={}
+        record_type_dict = vars(recordType)
+        self_health_data_dict = vars(selfHealthData)
 
-        tmp.pop("_sa_instance_state")
-        tmp["record_name"] = tmp_r["record_name"]
-        tmp["record_name_cn"] = tmp_r["record_name_cn"]
+        tmp["record"]           = self_health_data_dict["record"]
+        tmp["record_type"] = self_health_data_dict["record_type"]
+        tmp["record_time"]      = self_health_data_dict["record_time"]
+        tmp["record_name"]      = record_type_dict["record_name"]
+        tmp["record_name_cn"]   = record_type_dict["record_name_cn"]
         records_list.append(tmp)
 
     return records_list

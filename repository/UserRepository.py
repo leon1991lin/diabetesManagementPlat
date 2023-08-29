@@ -5,7 +5,7 @@ from pprint import pprint
 from sqlalchemy.orm import sessionmaker
 
 from apiproject import mysql_engine
-from apiproject.models import User
+from apiproject.models import User, MedicalRecords
 
 '''
 Table: Users
@@ -67,6 +67,22 @@ def update_one(user: dict):
 
     return "Success"
 
+def delete_one_by_id(user_id):
+    session = Session()
+    try:
+        del_record = session.query(User).filter(User.self_health_id == user_id).first()
+        session.delete(del_record)
+        session.commit()
+
+    except Exception as e:
+        print("Error: ", e)
+        return f"Delete Error: {e}"
+    finally:
+        session.close()
+
+    return "Success"
+
+# READ
 def get_all():
     session = Session()
     records_list = []
@@ -117,20 +133,7 @@ def get_user_by_name(user_name:str):
 
     return records_list
 
-def delete_one_by_id(user_id):
-    session = Session()
-    try:
-        del_record = session.query(User).filter(User.self_health_id == user_id).first()
-        session.delete(del_record)
-        session.commit()
 
-    except Exception as e:
-        print("Error: ", e)
-        return f"Delete Error: {e}"
-    finally:
-        session.close()
-
-    return "Success"
 
 
 if __name__ == '__main__':
@@ -139,4 +142,4 @@ if __name__ == '__main__':
 
     pprint(get_user_by_id(1))
 
-    pprint(get_user_by_name("Mary"))
+    pprint(get_user_by_name("陳小美"))

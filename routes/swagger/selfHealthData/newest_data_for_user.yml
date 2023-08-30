@@ -1,0 +1,66 @@
+summary: "取得<指定使用者>的最新監測數據"
+
+tags:
+  - "Self Health Data"
+
+parameters:
+  - name: "patient_id"
+    description: "病人編號(使用者編號)"
+    required: true
+    type: "number"
+    in: "path"
+    default: 1
+
+responses:
+  '200':
+    description: Success
+    schema:
+      type: object
+      properties:
+        patient_id:
+          type: "number"
+          description: "病人編號(使用者編號)"
+          example: 1
+        patient_name:
+          type: "string"
+          description: "病人名稱(使用者名稱)"
+          example: "王大明"
+        datas:
+          description: "最新的自主監測資料"
+          type: object
+          properties:
+            Height:
+              type: "number"
+              format: "double"
+              description: "身高(公分)"
+              example: 173.1
+            Weight:
+              type: "number"
+              format: "double"
+              description: "體重(公斤)"
+              example: 86.2
+            BMI:
+              type: "number"
+              format: "double"
+              description: "身體質量指數"
+              example: 28.73
+            GlucoseAC:
+              type: "number"
+              format: "double"
+              description: "飯前血糖"
+              example: 83
+            GlucosePC:
+              type: "number"
+              format: "double"
+              description: "飯後血糖"
+              example: 124
+            DBP:
+              type: "number"
+              format: "double"
+              description: "舒張壓"
+              example: 76
+            SBP:
+              type: "number"
+              format: "double"
+              description: "收縮壓"
+              example: 121

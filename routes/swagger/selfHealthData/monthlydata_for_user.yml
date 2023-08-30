@@ -1,0 +1,62 @@
+summary: "取得 <指定使用者> 的 <指定數據類別> 於 <指定月份> 的所有監控數據"
+
+tags:
+  - "Self Health Data"
+
+produces:
+  - application/json
+  -
+parameters:
+  - in: body
+    name: body
+    required: true
+    type: object
+    schema:
+      type: object
+      properties:
+        patient_id:
+          type: "number"
+          description: "病人代碼"
+          example: 1
+        search_month:
+          type: "string"
+          description: "指定月份"
+          example: "202308"
+        record_names:
+          type: "array"
+          description: "指定數據類型"
+          items:
+            type: "string"
+            example: "飯前血糖"
+
+responses:
+  '200':
+    description: Success
+    schema:
+      type: "array"
+      description: "指定月份數據(依照紀錄日期升冪排序)"
+      items:
+        type: "object"
+        properties:
+          record:
+            type: "number"
+            format: "double"
+            description: "紀錄數值"
+            example: 173.1
+          record_type:
+            type: "number"
+            description: "紀錄類別代碼 [1:HbA1C, 2:LDL-C, 3:身高, 4:體重, 5:飯前血糖, 6:飯後血糖, 7:舒張壓, 8:收縮壓]"
+            example: 3
+          record_name:
+            type: "string"
+            description: "紀錄類型名稱"
+            example: "GlucoseAC"
+          record_name_cn:
+            type: "string"
+            description: "紀錄類型中文名稱"
+            example: "飯前血糖"
+          record_time:
+            type: "string"
+            format: "date-time"
+            description: "紀錄時間"
+            example: "2023-08-28 00:00:00"

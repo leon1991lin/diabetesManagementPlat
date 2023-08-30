@@ -1,0 +1,47 @@
+summary: "取得<指定使用者>的近一周監測數據總覽(每日平均)"
+
+tags:
+  - "Self Health Data"
+
+parameters:
+  - name: "patient_id"
+    description: "病人編號(使用者編號)"
+    required: true
+    type: "number"
+    in: "path"
+    default: 1
+
+responses:
+  '200':
+    description: Success
+    schema:
+      type: "array"
+      description: "一周內數據總覽"
+      items:
+        type: "object"
+        properties:
+          avgGlucoseAC:
+            type: "number"
+            format: "double"
+            description: "平均飯前血糖"
+            example: 83.1
+          avgGlucosePC:
+            type: "number"
+            format: "double"
+            description: "平均飯前血糖"
+            example: 124.2
+          avgSBP:
+            type: "number"
+            format: "double"
+            description: "平均收縮壓"
+            example: 131.5
+          avgDBP:
+            type: "number"
+            format: "double"
+            description: "平均舒張壓"
+            example: 85.6
+          record_time:
+            type: "string"
+            format: "date"
+            description: "紀錄日期"
+            example: "2023-08-28"

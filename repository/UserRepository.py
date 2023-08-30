@@ -35,25 +35,45 @@ def update_one(user: dict):
             .one()
 
         for key, value in user.items():
-            match key:
-                case "user_name":
-                    record.user_name = value
-                case "user_account":
-                    record.user_account = value
-                case "user_password":
-                    record.user_password = value
-                case "born_date":
-                    record.born_date = value
-                case "telephone":
-                    record.telephone = value
-                case "address":
-                    record.address = value
-                case "user_type":
-                    record.user_type = value
-                case "institution_id":
-                    record.institution_id = value
-                case _:
-                    pass
+
+            if key=="user_name":
+                record.user_name = value
+            elif  key=="user_account":
+                record.user_account = value
+            elif  key=="user_password":
+                record.user_password = value
+            elif key == "gender":
+                record.gender = value
+            elif key == "born_date":
+                record.born_date = value
+            elif  key=="telephone":
+                record.telephone = value
+            elif  key=="address":
+                record.address = value
+            elif key == "user_type":
+                record.user_type = value
+            elif  key=="institution_id":
+                record.institution_id = value
+
+            # match key:
+            #     case "user_name":
+            #         record.user_name = value
+            #     case "user_account":
+            #         record.user_account = value
+            #     case "user_password":
+            #         record.user_password = value
+            #     case "born_date":
+            #         record.born_date = value
+            #     case "telephone":
+            #         record.telephone = value
+            #     case "address":
+            #         record.address = value
+            #     case "user_type":
+            #         record.user_type = value
+            #     case "institution_id":
+            #         record.institution_id = value
+            #     case _:
+            #         pass
 
         record.update_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         session.commit()

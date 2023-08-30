@@ -7,4 +7,7 @@ medicalRecords = Blueprint("medicalRecords", __name__, template_folder='routes')
 
 @medicalRecords.route('/medicalRecords/<user_id>', methods=["GET"])
 def getMedicalRecordsByUserID(user_id):
+    '''
+    file: swagger/medicalRecords/medicalRecordsInfo.yml
+    '''
     return MedicalRecordsService.get_patient_medical_records(user_id)

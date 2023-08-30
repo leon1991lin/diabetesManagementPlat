@@ -33,6 +33,10 @@ template = {
             "description":"自主監測數據"
         },
         {
+            "name": "Medical Records Data",
+            "description": "診察紀錄"
+        },
+        {
             "name": "Users",
             "description": "使用者資訊"
         },

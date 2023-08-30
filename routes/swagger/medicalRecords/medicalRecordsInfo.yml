@@ -1,0 +1,88 @@
+summary: "取得 <指定使用者> 的病歷紀錄"
+
+tags:
+  - "Medical Records Data"
+
+parameters:
+  - name: "user_id"
+    description: "病人編號(使用者編號)"
+    required: true
+    type: "number"
+    in: "path"
+    default: 1
+
+responses:
+  '200':
+    description: Success
+    schema:
+      type: object
+      properties:
+        patient_name:
+          type: "string"
+          description: "病人名稱(使用者名稱)"
+          example: "王大明"
+        patient_gender:
+          type: "string"
+          description: "病人性別"
+          example: "M"
+        patient_born_date:
+          type: "date"
+          description: "出生日期"
+          example: "1981-08-23"
+        diagnosis:
+          type: "string"
+          description: "診斷"
+          example: "Type 2 diabetes"
+        first_visit_date:
+          type: "date"
+          description: "初診日期"
+          example: "2023-08-18"
+        record_date:
+          type: "date"
+          description: "回診日期"
+          example: "2023-11-18"
+        doctor:
+          type: "string"
+          description: "主治醫師"
+          example: "王大明"
+        medical_datas:
+          type: "array"
+          description: "處方資料"
+          items:
+            type: "object"
+            properties:
+              record:
+                type: "number"
+                format: "double"
+                description: "數值紀錄"
+                example: 5.0
+              record_name_cn:
+                type: "string"
+                description: "數值紀錄中文名稱"
+                example: "醣化血色素"
+              record_name:
+                type: "string"
+                description: "數值紀錄名稱"
+                example: "HbA1C"
+              record_unit:
+                type: "string"
+                description: "數值單位"
+                example: "%"
+              test_date:
+                type: "date"
+                description: "回診日期"
+                example: "2023-11-18"
+        prescriptions:
+          type: "array"
+          description: "處方簽"
+          items:
+            type: "object"
+            properties:
+              medicine_name:
+                type: "string"
+                description: "處方藥名稱"
+                example: "Euclidan tablets 50m"
+              medicine_dosage:
+                type: "string"
+                description: "使用方法"
+                example: "BID"

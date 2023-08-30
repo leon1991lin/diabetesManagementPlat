@@ -1,7 +1,7 @@
 import json
 from datetime import date
 
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 
 from apiproject.service import SelfHeathDataService
 
@@ -46,18 +46,27 @@ def deleteOne(self_health_id):
 
 @selfHeathData.route('/selfHeathData/newest/<patient_id>', methods=["GET"])
 def newest_summary(patient_id):
-    return SelfHeathDataService.read_newest_by_patient_id(patient_id), 200
+    '''
+    file: swagger/selfHealthData/newest_data_for_user.yml
+    '''
+    return jsonify(SelfHeathDataService.read_newest_by_patient_id(patient_id)), 200
 
 @selfHeathData.route("/selfHeathData/monthlydata", methods=["POST"])
 def monthly_data():
+    '''
+    file: swagger/selfHealthData/monthlydata_for_user.yml
+    '''
     input_data = json.loads(request.get_data())
     if ("patient_id" not in input_data.keys()) or ("search_month"  not in input_data.keys()) or ("record_names" not in input_data.keys()):
         return "Input Data Error: miss item", 400
     elif (type(input_data["patient_id"]) != int) or (type(input_data["search_month"]) != str) or (type(input_data["record_names"]) != list):
         return "Input Data Error: error data type", 400
     else:
-        return SelfHeathDataService.read_monthly_data(patient_id=input_data["patient_id"],record_names=input_data["record_names"], start_date=input_data["search_month"]), 200
+        return jsonify(SelfHeathDataService.read_monthly_data(patient_id=input_data["patient_id"],record_names=input_data["record_names"], start_date=input_data["search_month"])), 200
 
 @selfHeathData.route('/selfHeathData/weeklydata/<patient_id>', methods=["GET"])
 def weekly_data(patient_id):
-    return SelfHeathDataService.read_weekly_by_patient_id(patient_id, searchDay=date.fromisoformat("2023-08-20")), 200
+    '''
+    file: swagger/selfHealthData/weekly_avgdata_for_user.yml
+    '''
+    return jsonify(SelfHeathDataService.read_weekly_by_patient_id(patient_id=patient_id, searchDay=date.fromisoformat("2023-08-23"))), 200

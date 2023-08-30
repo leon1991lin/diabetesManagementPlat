@@ -154,29 +154,29 @@ def read_weekly_by_patient_id(patient_id, searchDay=datetime.now().date()):
     while curr_day >= (searchDay - timedelta(days=7)):
 
         tmp = {
-            "record_date":curr_day,
+            "record_date":curr_day.strftime("%Y-%m-%d"),
             "avgGlucoseAC":-99,
             "avgGlucosePC": -99,
             "avgDBP":-99,
             "avgSBP":-99
         }
-
         curr_df = df.loc[df.record_date == curr_day]
         if curr_df.empty:
             pass
         else:
             secdf = curr_df.groupby("record_type")
             for name, type in present_items.items():
-
                 tmp[name] = secdf.get_group(type)["record"].mean()
 
-        curr_day -= timedelta(days=1)
         resultList.append(tmp)
+
+        curr_day -= timedelta(days=1)
 
     def keyfn(ele):
         return ele["record_date"]
 
     resultList.sort(key=keyfn, reverse=True)
+    pprint(resultList)
     return resultList
 
 
@@ -224,4 +224,4 @@ if __name__ == '__main__':
 
    # pprint(read_monthly_data(1, ["飯前血糖","飯後血糖"], "202308"))
 
-   pprint(read_weekly_by_patient_id(1, date.fromisoformat("2023-08-20")))
+   pprint(read_weekly_by_patient_id(1, date.fromisoformat("2023-08-23")))

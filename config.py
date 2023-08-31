@@ -17,11 +17,11 @@ template = {
             "email":"i88828702@gmail.com"
         },
     "servers":{
-        "url":"127.0.0.1:8016"
+        "url":"https://34c8-111-235-196-73.ngrok-free.app"
     },
     "version":"1.0.0"
     },
-    "host":"127.0.0.1:8016",
+    "host":"https://34c8-111-235-196-73.ngrok-free.app",
     "basePath":"",
     "tags":[
         {

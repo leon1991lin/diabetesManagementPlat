@@ -62,7 +62,11 @@ def monthly_data():
     elif (type(input_data["patient_id"]) != int) or (type(input_data["search_month"]) != str) or (type(input_data["record_names"]) != list):
         return "Input Data Error: error data type", 400
     else:
+<<<<<<< HEAD
         return jsonify(SelfHealthDataService.read_monthly_data(patient_id=input_data["patient_id"], record_names=input_data["record_names"], start_date=input_data["search_month"])), 200
+=======
+        return jsonify(SelfHealthDataService.read_monthly_data(patient_id=input_data["patient_id"],record_names=input_data["record_names"], start_date=input_data["search_month"])), 200
+>>>>>>> 38669ad1fa8a111210b152a746a8b52b81ea700d
 
 @selfHealthData.route('/selfHealthData/weeklydata/<patient_id>', methods=["GET"])
 def weekly_data(patient_id):

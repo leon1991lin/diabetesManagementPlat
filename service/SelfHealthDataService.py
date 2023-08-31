@@ -3,7 +3,13 @@ import json
 import pandas as pd
 from pprint import pprint
 
+<<<<<<< HEAD
 from apiproject.repository import SelfHealthDataRepository, RecordTypeRspository
+=======
+from apiproject.repository import SelfHealthDataRepository, RecordTypeRspository, UserRepository, \
+    MedicalRecordsRspository, MedicalRecordsDataRepository
+from apiproject.service import ageCalculation
+>>>>>>> 38669ad1fa8a111210b152a746a8b52b81ea700d
 
 
 def add_record(data):
@@ -179,6 +185,25 @@ def read_weekly_by_patient_id(patient_id, searchDay=datetime.now().date()):
     pprint(resultList)
     return resultList
 
+def read_data_by_by_institution(institution_id):
+    result_list = []
+
+    users_list = UserRepository.get_user_id_by_institution(institution_id)
+    for user_id in users_list:
+
+        tmp = read_newest_by_patient_id(user_id)
+        medical_records_tmp = MedicalRecordsRspository.get_newest_records_by_id(user_id)[0]
+        medical_data_tmp = MedicalRecordsDataRepository.get_data_by_recrod_id(medical_records_tmp.pop("medical_record_id"))
+
+        tmp['memo'] = medical_records_tmp['memo']
+        tmp['patient_gender'] = "男性" if medical_records_tmp.pop("patient_gender") == "M" else "女性"
+        tmp["patient_age"] = ageCalculation.getAge(medical_records_tmp.pop("patient_born_date"))
+        for medical_data in medical_data_tmp:
+            tmp["datas"][medical_data["record_name"]] = medical_data["record"]
+
+        result_list.append(tmp)
+
+    return result_list
 
 if __name__ == '__main__':
 
@@ -224,4 +249,6 @@ if __name__ == '__main__':
 
    # pprint(read_monthly_data(1, ["飯前血糖","飯後血糖"], "202308"))
 
-   pprint(read_weekly_by_patient_id(1, date.fromisoformat("2023-08-23")))
+   # pprint(read_weekly_by_patient_id(1, date.fromisoformat("2023-08-23")))
+
+   pprint(read_data_by_by_institution(2))

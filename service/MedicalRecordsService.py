@@ -10,7 +10,7 @@ def get_patient_medical_records(user_id:int):
 
     result_dict["medical_datas"] = MedicalRecordsDataRepository.get_data_by_recrod_id(result_dict.pop("medical_record_id"))
     result_dict["prescriptions"] = PrescriptionRepository.get_prescription_by_id(result_dict.pop("prescription_id"))
-
+    
     return result_dict
 
 if __name__ == '__main__':

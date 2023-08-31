@@ -243,8 +243,8 @@ if __name__ == '__main__':
 
     # update_one_record(self_health_data)
 
-    # records = get_patient_data_by_patient_id(99)
-    # pprint(records)
+    records = get_patient_data_by_patient_id(1)
+    pprint(records)
 
     # pprint(get_all())
 
@@ -255,4 +255,4 @@ if __name__ == '__main__':
     # print(df.info())
     # pprint(df.to_dict("records"))
 
-    pprint(get_monthly_data(1, 1, "202308"))
+    # pprint(get_monthly_data(1, 1, "202308"))

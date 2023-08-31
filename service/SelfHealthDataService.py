@@ -3,7 +3,9 @@ import json
 import pandas as pd
 from pprint import pprint
 
-from apiproject.repository import SelfHeathDataRepository, RecordTypeRspository
+from apiproject.repository import SelfHealthDataRepository, RecordTypeRspository, UserRepository, \
+    MedicalRecordsRspository, MedicalRecordsDataRepository
+from apiproject.service import ageCalculation
 
 
 def add_record(data):
@@ -11,7 +13,7 @@ def add_record(data):
     if type(data) == str:
         try:
             data = json.loads(data)
-            msg = SelfHeathDataRepository.insert_one(data)
+            msg = SelfHealthDataRepository.insert_one(data)
         except Exception as e:
             msg = f"Input Type Error: {e} , input data:{data}."
 
@@ -22,7 +24,7 @@ def add_record(data):
             and ("record_date"  in data.keys())\
             and ("record"       in  data.keys()):
 
-            msg = SelfHeathDataRepository.insert_one(data)
+            msg = SelfHealthDataRepository.insert_one(data)
 
         else:
 
@@ -63,7 +65,7 @@ def add_records(data_list:list):
             msg = f"Input Element Type Error: element type need to be 'dict' , input data type: {type(data)}."
             return {"message": msg}
 
-        msg = SelfHeathDataRepository.insert_all(data_list)
+        msg = SelfHealthDataRepository.insert_all(data_list)
         return {"message": msg}
 
 def update_record(data):
@@ -71,7 +73,7 @@ def update_record(data):
     if type(data) == str:
         try:
             data = json.loads(data)
-            msg = SelfHeathDataRepository.update_one_record(data)
+            msg = SelfHealthDataRepository.update_one_record(data)
         except Exception as e:
             msg = f"Update Type Error: {e} , input data:{data}."
 
@@ -82,7 +84,7 @@ def update_record(data):
                 and ("record_date" in data.keys()) \
                 and ("record" in data.keys()):
 
-            msg = SelfHeathDataRepository.update_one_record(data)
+            msg = SelfHealthDataRepository.update_one_record(data)
 
         else:
 
@@ -98,7 +100,7 @@ def delete_by_id(self_health_id):
 
     try:
 
-        return {"message": SelfHeathDataRepository.delete_one_by_id(self_health_id)}
+        return {"message": SelfHealthDataRepository.delete_one_by_id(self_health_id)}
 
     except Exception as e:
 
@@ -106,11 +108,11 @@ def delete_by_id(self_health_id):
 
 def read_all():
 
-    return {"message": SelfHeathDataRepository.get_all()}
+    return {"message": SelfHealthDataRepository.get_all()}
 
 def read_newest_by_patient_id(patient_id):
 
-    df = pd.DataFrame(SelfHeathDataRepository.get_data_by_patient_id_join(patient_id))
+    df = pd.DataFrame(SelfHealthDataRepository.get_data_by_patient_id_join(patient_id))
     sector = df.groupby("record_name")
 
     present_items = ["GlucoseAC", "GlucosePC", "DBP", "SBP", "Height", "Weight"]
@@ -131,7 +133,7 @@ def read_newest_by_patient_id(patient_id):
 def read_monthly_data(patient_id, record_names,start_date):
     df = pd.DataFrame()
     for record_name in record_names:
-        tmp_df = pd.DataFrame(SelfHeathDataRepository.get_monthly_data(patient_id=patient_id, start_date=start_date, record_type=RecordTypeRspository.get_id_by_name(record_name)))
+        tmp_df = pd.DataFrame(SelfHealthDataRepository.get_monthly_data(patient_id=patient_id, start_date=start_date, record_type=RecordTypeRspository.get_id_by_name(record_name)))
         df = pd.concat([df, tmp_df])
 
     df = df.sort_values(by=["record_time", "record_type"], ascending=True)
@@ -144,7 +146,7 @@ def read_weekly_by_patient_id(patient_id, searchDay=datetime.now().date()):
     curr_day = searchDay
     present_items = {"avgGlucoseAC":5, "avgGlucosePC":6, "avgDBP":7, "avgSBP":8}
 
-    df = pd.DataFrame(SelfHeathDataRepository.get_patient_data_by_patient_id(patient_id))
+    df = pd.DataFrame(SelfHealthDataRepository.get_patient_data_by_patient_id(patient_id))
     if df.empty:
         return resultList
 
@@ -179,6 +181,25 @@ def read_weekly_by_patient_id(patient_id, searchDay=datetime.now().date()):
     pprint(resultList)
     return resultList
 
+def read_data_by_by_institution(institution_id):
+    result_list = []
+
+    users_list = UserRepository.get_user_id_by_institution(institution_id)
+    for user_id in users_list:
+
+        tmp = read_newest_by_patient_id(user_id)
+        medical_records_tmp = MedicalRecordsRspository.get_newest_records_by_id(user_id)[0]
+        medical_data_tmp = MedicalRecordsDataRepository.get_data_by_recrod_id(medical_records_tmp.pop("medical_record_id"))
+
+        tmp['memo'] = medical_records_tmp['memo']
+        tmp['patient_gender'] = "男性" if medical_records_tmp.pop("patient_gender") == "M" else "女性"
+        tmp["patient_age"] = ageCalculation.getAge(medical_records_tmp.pop("patient_born_date"))
+        for medical_data in medical_data_tmp:
+            tmp["datas"][medical_data["record_name"]] = medical_data["record"]
+
+        result_list.append(tmp)
+
+    return result_list
 
 if __name__ == '__main__':
 
@@ -224,4 +245,6 @@ if __name__ == '__main__':
 
    # pprint(read_monthly_data(1, ["飯前血糖","飯後血糖"], "202308"))
 
-   pprint(read_weekly_by_patient_id(1, date.fromisoformat("2023-08-23")))
+   # pprint(read_weekly_by_patient_id(1, date.fromisoformat("2023-08-23")))
+
+   pprint(read_data_by_by_institution(2))

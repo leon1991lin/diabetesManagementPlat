@@ -1,0 +1,90 @@
+summary: "取得<指定使用者>的近一周監測數據總覽(每日平均)"
+
+tags:
+  - "Users"
+
+parameters:
+  - name: "institution_id"
+    description: "院所編號"
+    required: true
+    type: "number"
+    in: "path"
+    default: 3
+
+responses:
+  200:
+    description: "Success"
+    schema:
+      type: "array"
+      description: "指定月份數據(依照紀錄日期升冪排序)"
+      items:
+        type: "object"
+        properties:
+          patient_id:
+            type: "number"
+            description: "使用者代碼(病人編號)"
+            example: 1
+          patient_name:
+            type: "string"
+            description: "病人名稱"
+            example: "林大雄"
+          patient_gender:
+            type: "string"
+            description: "病人性別"
+            example: "男"
+          patient_age:
+            type: "number"
+            description: "病人年齡"
+            example: 50
+          memo:
+            type: "string"
+            description: "備註"
+            example: "無"
+          datas:
+            type: "object"
+            properties:
+              Height:
+                type: "number"
+                format: "double"
+                description: "身高(公分)"
+                example: 173.1
+              Weight:
+                type: "number"
+                format: "double"
+                description: "體重(公斤)"
+                example: 86.2
+              BMI:
+                type: "number"
+                format: "double"
+                description: "身體質量指數"
+                example: 28.73
+              GlucoseAC:
+                type: "number"
+                format: "double"
+                description: "飯前血糖"
+                example: 83
+              GlucosePC:
+                type: "number"
+                format: "double"
+                description: "飯後血糖"
+                example: 124
+              DBP:
+                type: "number"
+                format: "double"
+                description: "舒張壓"
+                example: 76
+              SBP:
+                type: "number"
+                format: "double"
+                description: "收縮壓"
+                example: 121
+              HbA1C:
+                type: "number"
+                format: "double"
+                description: "HbA1C"
+                example: 5.0
+              LDL-C:
+                type: "number"
+                format: "double"
+                description: "LDL-C"
+                example: 91.0

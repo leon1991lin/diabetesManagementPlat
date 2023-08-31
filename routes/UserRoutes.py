@@ -1,7 +1,7 @@
 import json
 from flask import Blueprint, request
 
-from apiproject.service import UserService
+from apiproject.service import UserService, SelfHealthDataService
 
 user = Blueprint("user", __name__, template_folder='routes')
 
@@ -34,4 +34,11 @@ def deleteOne(user_id):
     file: swagger/user/delUser.yml
     '''
     return UserService.delete_one_by_id(user_id), 200
+
+@user.route('/users/ofinstitution/<institution_id>', methods=["GET"])
+def get_users_by_institution_id(institution_id):
+    '''
+    file: swagger/user/usersOfInstitution.yml
+    '''
+    return SelfHealthDataService.read_data_by_by_institution(institution_id), 200
 

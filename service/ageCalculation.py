@@ -23,7 +23,7 @@ def getAge(born_day):
             year -= 1
             month+= 12
         day = month_days[month] + day
-    print(f"year:{year}, month:{month}, day:{day}")
+    # print(f"year:{year}, month:{month}, day:{day}")
     return year
 
 if __name__ == '__main__':

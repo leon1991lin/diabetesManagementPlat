@@ -35,6 +35,7 @@ def get_newest_records_by_id(patient_id:int):
                             MedicalRecords.prescription_id,
                             MedicalRecords.diagnosis,
                             MedicalRecords.record_date,
+                            MedicalRecords.memo,
                             FirstMedicalRecordDay.c.record_date,
                             DoctorInfo.staff_name
                             )\
@@ -50,7 +51,7 @@ def get_newest_records_by_id(patient_id:int):
         tmp_list = [i for i in record]
         records_list.append(tmp_list)
 
-    columns = ["patient_name", "patient_gender", "patient_born_date", "medical_record_id", "prescription_id", "diagnosis", "record_date", "first_visit_date", "doctor"]
+    columns = ["patient_name", "patient_gender", "patient_born_date", "medical_record_id", "prescription_id", "diagnosis", "record_date", "memo", "first_visit_date", "doctor"]
 
     return pd.DataFrame(records_list, columns=columns).to_dict("records")
 

@@ -17,7 +17,7 @@ Session = sessionmaker(bind=mysql_engine().engine)
 def get_data_by_recrod_id(medical_record_id:int):
     session = Session()
     records_list = []
-    records = session.query(MedicalRecordsData, RecordType.record_name_cn, RecordType.record_name, RecordType.record_unit ) \
+    records = session.query(MedicalRecordsData, RecordType.record_name, RecordType.record_name_cn, RecordType.record_unit ) \
             .join(RecordType, MedicalRecordsData.record_type == RecordType.type_id) \
             .filter(MedicalRecordsData.medical_record_id == medical_record_id)\
             .all()

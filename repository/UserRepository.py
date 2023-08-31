@@ -153,13 +153,31 @@ def get_user_by_name(user_name:str):
 
     return records_list
 
+def get_user_id_by_institution(institution_id:int):
+    session = Session()
+    records_list = []
 
+    try:
+        records = session.query(User).filter(User.institution_id == institution_id).filter(User.user_type == 1).all()
 
+        for row in records:
+            records_list.append(vars(row)["user_id"])
+
+    except Exception as e:
+        print("Error: ", e)
+        return f"Select Error: {e}"
+
+    finally:
+        session.close()
+
+    return records_list
 
 if __name__ == '__main__':
 
     # pprint(get_all())
 
-    pprint(get_user_by_id(1))
+    # pprint(get_user_by_id(1))
 
-    pprint(get_user_by_name("陳小美"))
+    # pprint(get_user_by_name("陳小美"))
+
+    pprint(get_user_id_by_institution(3))
